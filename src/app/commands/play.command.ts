@@ -61,27 +61,41 @@ export class PlayCommand implements Command {
     link: string,
     info: VoiceInfo
   ) => {
-    if (info.firstPlay) {
-      const audio = await play.stream(link);
+    try {
+      if (info.firstPlay) {
+        const audio = await play.stream(link);
 
-      const resource = createAudioResource(audio.stream, {
-        inputType: audio.type,
-      });
+        const resource = createAudioResource(audio.stream, {
+          inputType: audio.type,
+        });
 
-      info.player.play(resource);
-      info.connection.subscribe(info.player);
+        info.player.play(resource);
+        info.connection.subscribe(info.player);
 
-      await interaction.followUp(
-        `Now playing:\n${(await play.video_info(link)).video_details.url}`
-      );
+        await interaction.followUp(
+          `Now playing:\n${(await play.video_info(link)).video_details.url}`
+        );
 
-      info.firstPlay = false;
-    } else {
-      info.queue.push(link);
+        info.firstPlay = false;
+      } else {
+        info.queue.push(link);
 
-      await interaction.followUp(
-        `Added to queue:\n${(await play.video_info(link)).video_details.url}`
-      );
+        await interaction.followUp(
+          `Added to queue:\n${(await play.video_info(link)).video_details.url}`
+        );
+      }
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message.includes('Sign in to confirm your age')
+      ) {
+        this.logger.error(error, 'PlayCommand');
+        await interaction.followUp(
+          'Sorry, I cannot play this video because it requires age confirmation.'
+        );
+      } else {
+        this.logger.error(error as Error, 'PlayCommand');
+      }
     }
   };
 
