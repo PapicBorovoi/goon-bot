@@ -1,4 +1,4 @@
-import { Events, Interaction } from 'discord.js';
+import { ChatInputCommandInteraction, Events } from 'discord.js';
 import { inject, injectable } from 'inversify';
 import { CommandRepository } from '../commands/command.repository';
 import { Component } from '../../shared/types/component.enum';
@@ -17,13 +17,16 @@ export class InteractionCreateEvent {
     @inject(Component.Logger) private readonly logger: Logger
   ) {}
 
-  private async execute(interaction: Interaction) {
+  private async execute(interaction: ChatInputCommandInteraction) {
     if (!interaction.isCommand()) return;
 
     const command = this.commandRepository.get(interaction.commandName);
 
     if (!command) {
-      console.error('no command found');
+      this.logger.error(
+        new Error(`Command ${interaction.commandName} not found`),
+        'InteractionCreateEvent'
+      );
       return;
     }
 
@@ -34,7 +37,7 @@ export class InteractionCreateEvent {
         'InteractionCreateEvent'
       );
     } catch (error) {
-      console.error(error);
+      this.logger.error(error as Error, 'InteractionCreateEvent');
       if (interaction.replied || interaction.deferred) {
         await interaction.followUp({
           content: 'There was an error while executing this command!',
@@ -50,8 +53,8 @@ export class InteractionCreateEvent {
   }
 
   public init() {
-    this.discordClient.client.on(this.name, async (interaction: Interaction) =>
-      this.execute(interaction)
+    this.discordClient.client.on(this.name, async (interaction) =>
+      this.execute(interaction as ChatInputCommandInteraction)
     );
   }
 }

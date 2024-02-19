@@ -1,10 +1,13 @@
-import { BaseInteraction } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  InteractionResponse,
+  Message,
+  SlashCommandBuilder,
+} from 'discord.js';
 
 export interface Command {
-  data: {
-    name: string;
-    description: string;
-    toJSON: () => Record<string, unknown>;
-  };
-  execute: (interaction: BaseInteraction) => Promise<void>;
+  data: SlashCommandBuilder;
+  execute: (
+    interaction: ChatInputCommandInteraction
+  ) => Promise<void | InteractionResponse<boolean> | Message<boolean>>;
 }

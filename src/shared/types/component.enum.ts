@@ -5,4 +5,6 @@ export const Component = {
   DiscordClient: Symbol.for('DiscordClient'),
   InteractionCreateEvent: Symbol.for('InteractionCreateEvent'),
   ReadyEvent: Symbol.for('ReadyEvent'),
+  VoiceInfoRepository: Symbol.for('VoiceInfoRepository'),
+  Command: Symbol.for('Command'),
 } as const;

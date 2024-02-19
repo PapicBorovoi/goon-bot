@@ -24,9 +24,6 @@ rules:
     - error
     - ignorePatterns: '^_'
     - ignoreRestSiblings: true
-  prefer-const:
-    - error
-    - destructuring: 'all'
 ignorePatterns:
   - node_modules/
   - dist/

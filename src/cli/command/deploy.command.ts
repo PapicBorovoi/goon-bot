@@ -2,7 +2,7 @@ import { Command } from './command.interface';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
 import { REST, Routes } from 'discord.js';
-import { Command as DsCommand } from 'src/app/commands/command.interface';
+import { Command as DsCommand } from '../../app/commands/command.interface';
 
 export class DeployCommand implements Command {
   constructor() {}
@@ -13,7 +13,7 @@ export class DeployCommand implements Command {
 
   public async execute(): Promise<void> {
     const commands = [];
-    const commandsPath = path.join(__dirname, '..', '..', 'commands');
+    const commandsPath = path.join(__dirname, '..', '..', 'app', 'commands');
     const commandFiles = fs
       .readdirSync(commandsPath)
       .filter(
