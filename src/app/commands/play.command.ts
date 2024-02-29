@@ -26,7 +26,7 @@ export class PlayCommand implements Command {
         .setDescription('YouTube link, id or search query.')
         .setRequired(true)
         .setMinLength(1)
-        .setMaxLength(50)
+        .setMaxLength(250)
     )
     .setDMPermission(false);
 
@@ -199,10 +199,9 @@ export class PlayCommand implements Command {
           .finally(() => msg.delete());
         ytURL = confirmation.customId;
       } catch (_) {
-        return await interaction.editReply({
+        return await interaction.followUp({
           content: '❌ | You did not select a song in time.',
-          embeds: [],
-          components: [],
+          ephemeral: true,
         });
       }
 
