@@ -8,7 +8,7 @@ import {
 import { createAudioResource } from '@discordjs/voice';
 import { makeButton, makeEmbedResponse } from '../../shared/util/play.util';
 import * as play from 'play-dl';
-import { AWAIT_TIME_FOR_RESPONSE } from './command.const';
+import { AWAIT_TIME_FOR_RESPONSE, MAX_QUEUE_LENGTH } from './command.const';
 import { Command } from './command.interface';
 import { inject, injectable } from 'inversify';
 import { Component } from '../../shared/types/component.enum';
@@ -81,6 +81,12 @@ export class PlayCommand implements Command {
           firstPlay: false,
         });
       } else {
+        if (info.queue.length === MAX_QUEUE_LENGTH) {
+          return await interaction.followUp({
+            content: '❌ | Queue is full.',
+          });
+        }
+
         info.queue.push(ytURL);
         await interaction.followUp({
           content: `🎶 | Added to queue:\n${ytURL}`,
