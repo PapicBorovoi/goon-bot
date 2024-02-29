@@ -1,5 +1,5 @@
 import { inject, injectable, multiInject } from 'inversify';
-import { Logger } from 'src/shared/logger/logger.interface';
+import { Logger } from '@/shared/logger/logger.interface';
 import { Component } from '../shared/types/component.enum';
 import { CommandRepository } from './commands/command.repository';
 import { DiscordClient } from './client';

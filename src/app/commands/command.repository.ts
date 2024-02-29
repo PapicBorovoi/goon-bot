@@ -1,6 +1,6 @@
 import { Collection } from 'discord.js';
 import { inject, injectable } from 'inversify';
-import { Logger } from 'src/shared/logger/logger.interface';
+import { Logger } from '@/shared/logger/logger.interface';
 import { Component } from '../../shared/types/component.enum';
 import { Command } from './command.interface';
 

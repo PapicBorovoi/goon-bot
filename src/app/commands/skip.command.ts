@@ -6,7 +6,7 @@ import {
 } from 'discord.js';
 import { Command } from './command.interface';
 import { inject, injectable } from 'inversify';
-import { Component } from 'src/shared/types/component.enum';
+import { Component } from '@/shared/types/component.enum';
 import { VoiceInfoRepository } from './music/voice-info.repository';
 import { Logger } from '@/shared/logger/logger.interface';
 

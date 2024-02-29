@@ -12,7 +12,7 @@ import {
   VoiceBasedChannel,
   Guild,
 } from 'discord.js';
-import { VoiceInfo } from 'src/shared/types/play.type';
+import { VoiceInfo } from '@/shared/types/play.type';
 import { AWAIT_TIME_BEFORE_DISCONNECT } from '../command.const';
 import * as play from 'play-dl';
 import { Logger } from '@/shared/logger/logger.interface';

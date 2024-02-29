@@ -1,6 +1,6 @@
 import { Events, Client, VoiceState } from 'discord.js';
 import { inject, injectable } from 'inversify';
-import { Logger } from 'src/shared/logger/logger.interface';
+import { Logger } from '@/shared/logger/logger.interface';
 import { Component } from '../../shared/types/component.enum';
 import { DiscordClient } from '../client';
 import { AWAIT_TIME_AFTER_USER_DISCONNECT } from '../commands/command.const';
