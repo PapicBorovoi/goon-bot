@@ -8,3 +8,12 @@ export type VoiceInfo = {
   isBotConnected: boolean;
   queue: string[];
 };
+
+export type VoiceInfoUpdate = {
+  player?: AudioPlayer;
+  connection?: VoiceConnection;
+  firstPlay?: boolean;
+  firstInit?: boolean;
+  isBotConnected?: boolean;
+  queue?: string[];
+};

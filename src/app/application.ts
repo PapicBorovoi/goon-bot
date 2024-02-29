@@ -1,11 +1,12 @@
 import { inject, injectable, multiInject } from 'inversify';
-import { Logger } from 'shared/logger/logger.interface';
+import { Logger } from 'src/shared/logger/logger.interface';
 import { Component } from '../shared/types/component.enum';
 import { CommandRepository } from './commands/command.repository';
 import { DiscordClient } from './client';
 import { Command } from './commands/command.interface';
 import { ReadyEvent } from './events/ready.event';
 import { InteractionCreateEvent } from './events/interaction-create.event';
+import { ChanelLeaveEvent } from './events/chanel-leave.event';
 
 @injectable()
 export class Application {
@@ -18,7 +19,9 @@ export class Application {
     @inject(Component.ReadyEvent) private readonly readyEvent: ReadyEvent,
     @inject(Component.InteractionCreateEvent)
     private readonly interactionCreateEvent: InteractionCreateEvent,
-    @multiInject(Component.Command) private readonly commands: Command[]
+    @multiInject(Component.Command) private readonly commands: Command[],
+    @inject(Component.ChanelLeaveEvent)
+    private readonly chanelLeaveEvent: ChanelLeaveEvent
   ) {}
 
   private async initCommands(): Promise<void> {
@@ -30,6 +33,7 @@ export class Application {
   private initEvents() {
     this.readyEvent.init();
     this.interactionCreateEvent.init();
+    this.chanelLeaveEvent.init();
   }
 
   private async login(): Promise<void> {

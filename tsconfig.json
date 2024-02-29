@@ -1,7 +1,10 @@
 {
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
   "compilerOptions": {
     "target": "ES2022",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "noFallthroughCasesInSwitch": false,
     "allowSyntheticDefaultImports": true,
     "module": "CommonJS",
@@ -16,7 +19,7 @@
     "noImplicitAny": true,
     "outDir": "./dist",
     "paths": {
-      "*": ["*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src/**/*"],

@@ -7,4 +7,6 @@ export const Component = {
   ReadyEvent: Symbol.for('ReadyEvent'),
   VoiceInfoRepository: Symbol.for('VoiceInfoRepository'),
   Command: Symbol.for('Command'),
+  MusicService: Symbol.for('MusicService'),
+  ChanelLeaveEvent: Symbol.for('ChanelLeaveEvent'),
 } as const;

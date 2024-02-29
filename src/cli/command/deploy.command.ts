@@ -1,11 +1,33 @@
 import { Command } from './command.interface';
-import * as path from 'node:path';
-import * as fs from 'node:fs';
 import { REST, Routes } from 'discord.js';
-import { Command as DsCommand } from '../../app/commands/command.interface';
+import { VoiceInfoRepository } from '../../app/commands/music/voice-info.repository';
+import { Logger } from '../../shared/logger/logger.interface';
+import { PinoLogger } from '../../shared/logger/pino-loger';
+import { MusicService } from '../../app/commands/music/music.service';
+import { PlayCommand } from '../../app/commands/play.command';
+import { SkipCommand } from '@/app/commands/skip.command';
+import { ClearCommand } from '@/app/commands/clear.command';
 
 export class DeployCommand implements Command {
-  constructor() {}
+  voiceInfoRepository: VoiceInfoRepository;
+  logger: Logger;
+  musicService: MusicService;
+  playCommand: PlayCommand;
+  skipCommand: SkipCommand;
+  clearCommand: ClearCommand;
+
+  constructor() {
+    this.voiceInfoRepository = new VoiceInfoRepository();
+    this.logger = new PinoLogger();
+    this.musicService = new MusicService(this.voiceInfoRepository, this.logger);
+    this.playCommand = new PlayCommand(
+      this.voiceInfoRepository,
+      this.logger,
+      this.musicService
+    );
+    this.skipCommand = new SkipCommand(this.voiceInfoRepository, this.logger);
+    this.clearCommand = new ClearCommand(this.voiceInfoRepository, this.logger);
+  }
 
   public getName(): string {
     return '--deploy';
@@ -13,17 +35,10 @@ export class DeployCommand implements Command {
 
   public async execute(): Promise<void> {
     const commands = [];
-    const commandsPath = path.join(__dirname, '..', '..', 'app', 'commands');
-    const commandFiles = fs
-      .readdirSync(commandsPath)
-      .filter(
-        (file) => file.split('.')[file.split('.').length - 2] === 'command'
-      );
 
-    for (const file of commandFiles) {
-      const command: DsCommand = await import(path.join(commandsPath, file));
-      commands.push(command.data.toJSON());
-    }
+    commands.push(this.playCommand.data.toJSON());
+    commands.push(this.skipCommand.data.toJSON());
+    commands.push(this.clearCommand.data.toJSON());
 
     if (!process.env.TOKEN) {
       console.error('Token not found');
